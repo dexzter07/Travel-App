@@ -1,0 +1,45 @@
+name: cab_booking
+description: A new Flutter application.
+
+publish_to:
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  persistent_bottom_nav_bar:
+  flutter_bloc:
+  cupertino_icons:
+  url_launcher:
+  http:
+  shared_preferences:
+  share:
+  launch_review:
+  carousel_slider: ^4.0.0-nullsafety.0
+  readmore:
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/images/car_category/
+    - assets/images/day_tour/
+
+  fonts:
+    - family: PoppinsRegular
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+
+    - family: PoppinsBold
+      fonts:
+        - asset: assets/fonts/Poppins-Bold.ttf
