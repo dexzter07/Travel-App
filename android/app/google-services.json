@@ -1,0 +1,142 @@
+{
+  "project_info": {
+    "project_number": "665398077806",
+    "project_id": "gotravel-e0346",
+    "storage_bucket": "gotravel-e0346.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:665398077806:android:64bb340f6572a2b2fab97f",
+        "android_client_info": {
+          "package_name": "com.example.cab_booking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "665398077806-24l93h2i8rvhrsknrutcbrt9rdpnnlml.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cab_booking",
+            "certificate_hash": "71b24103ea0bc3f0ad1236102c4ae42f1880ca3c"
+          }
+        },
+        {
+          "client_id": "665398077806-vujl8m5ubjqba58o8f51mshbpq5afao6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAm3x4NbYxReqMisnh4qOrlqrbPKUlPLS8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "665398077806-vujl8m5ubjqba58o8f51mshbpq5afao6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:665398077806:android:b8a2c6d5ca282ebafab97f",
+        "android_client_info": {
+          "package_name": "com.example.driver_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "665398077806-npv4beqgttgjennkdiajs228an1lsrcj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.driver_app",
+            "certificate_hash": "0c9959aab56c6033a51f8946e30499fe6482b7e2"
+          }
+        },
+        {
+          "client_id": "665398077806-vujl8m5ubjqba58o8f51mshbpq5afao6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAm3x4NbYxReqMisnh4qOrlqrbPKUlPLS8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "665398077806-vujl8m5ubjqba58o8f51mshbpq5afao6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:665398077806:android:916edf4b2ebe83befab97f",
+        "android_client_info": {
+          "package_name": "com.example.gotraveldemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "665398077806-vujl8m5ubjqba58o8f51mshbpq5afao6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAm3x4NbYxReqMisnh4qOrlqrbPKUlPLS8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "665398077806-vujl8m5ubjqba58o8f51mshbpq5afao6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:665398077806:android:630485e6e937b8c7fab97f",
+        "android_client_info": {
+          "package_name": "com.example.phone_auth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "665398077806-vujl8m5ubjqba58o8f51mshbpq5afao6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAm3x4NbYxReqMisnh4qOrlqrbPKUlPLS8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "665398077806-vujl8m5ubjqba58o8f51mshbpq5afao6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

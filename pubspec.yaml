@@ -12,7 +12,6 @@ dependencies:
   flutter:
     sdk: flutter
   persistent_bottom_nav_bar:
-  flutter_bloc:
   cupertino_icons:
   url_launcher:
   http:
@@ -21,6 +20,11 @@ dependencies:
   launch_review:
   carousel_slider: ^4.0.0-nullsafety.0
   readmore:
+  firebase_auth:
+  firebase_core:
+  pinput:
+  image_picker:
+  get:
 
 dev_dependencies:
   flutter_test:

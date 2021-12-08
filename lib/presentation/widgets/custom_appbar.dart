@@ -14,10 +14,10 @@ class CustomAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: AppColors.primaryColor,
-      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 12),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
       child: Row(
         children: [
-          hideBackIcon == true? Container():CustomInkWell(
+          hideBackIcon == true? Container():InkWell(
               onTap: (){
                 Navigator.pop(context);
               },

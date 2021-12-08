@@ -1,15 +1,16 @@
 import 'package:cab_booking/data/models/carousel_model.dart';
-import 'package:cab_booking/presentation/constants/app_constants.dart';
+import 'package:cab_booking/presentation/pages/shared_booking_list.dart';
 import 'package:cab_booking/presentation/styles/custom_text_style.dart';
 import 'package:cab_booking/presentation/widgets/carousel_widget.dart';
-import 'package:cab_booking/presentation/widgets/custom_appbar.dart';
 import 'package:cab_booking/presentation/widgets/custom_text_widget.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-
+import 'package:get/get.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:readmore/readmore.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'full_booking_list.dart';
 
 class DayDetailPage extends StatefulWidget {
   const DayDetailPage({Key? key}) : super(key: key);
@@ -20,12 +21,21 @@ class DayDetailPage extends StatefulWidget {
 
 class _DayDetailPageState extends State<DayDetailPage> {
   String? _select;
-  String? _selectPerson;
+  String? _selectPerson = "1";
   List<CarouselModel> _carouselModel = [
     CarouselModel(imageUrl: "assets/images/day_tour/gangtok.jpg"),
     CarouselModel(imageUrl: "assets/images/day_tour/deorali.jpg"),
     CarouselModel(imageUrl: "assets/images/day_tour/changu.jpg"),
   ];
+  DateTime selectedDate = DateTime.now();
+
+  _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(context: context, initialDate: selectedDate, firstDate: DateTime(2021), lastDate: DateTime(2022));
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+      });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -244,6 +254,27 @@ class _DayDetailPageState extends State<DayDetailPage> {
                                   ],
                                 ),
                                 SizedBox(height: 8,),
+                                InkWell(
+                                  onTap: () => _selectDate(context),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      CustomTextWidget("Travel Date",
+                                          style: CustomTextStyle.mediumTextStyle(
+                                              color: Colors.black),
+                                          alignText: false,
+                                          textOverflow: null),
+                                      Spacer(),
+                                      Icon(Icons.calendar_today, size: 17,),
+                                      Text(
+                                        "${selectedDate.toLocal()}".split(' ')[0],
+                                        style: TextStyle(fontSize: 16,color: Color.fromRGBO(1, 1 , 1, 1),),
+                                      ),
+
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(height: 8,),
                                 Row(
                                   children: [
                                     CustomTextWidget("Select Vehicle",
@@ -380,22 +411,25 @@ class _DayDetailPageState extends State<DayDetailPage> {
                                   height: 20,
                                 ),
 
-                                SizedBox(
-                                  height: 30,
-                                ),
+
                                 MaterialButton(
                                   height: 40.0,
                                   minWidth: 300.0,
                                   color: Colors.deepOrangeAccent,
                                   textColor: Colors.white,
                                   child: new Text("Continue"),
-                                  onPressed: () => {},
+                                  onPressed: () => {
+                                    Get.to(() => SharedBookingList(selectPerson: _selectPerson))
+
+                                  },
                                   splashColor: Colors.redAccent,
                                 )
                               ],
                             ),
                           ),
-                          //  Full Booking
+
+
+                          /////////////////////////// Full Booking /////////////////////////////////////
                           Container(
                             margin:
                                 EdgeInsets.symmetric(horizontal: 0, vertical: 0),
@@ -419,7 +453,28 @@ class _DayDetailPageState extends State<DayDetailPage> {
                                         textOverflow: null),
                                   ],
                                 ),
-                                Divider(),
+                                SizedBox(height: 8,),
+                                InkWell(
+                                  onTap: () => _selectDate(context),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      CustomTextWidget("Travel Date",
+                                          style: CustomTextStyle.mediumTextStyle(
+                                              color: Colors.black),
+                                          alignText: false,
+                                          textOverflow: null),
+                                      Spacer(),
+                                      Icon(Icons.calendar_today, size: 17,),
+                                      Text(
+                                        "${selectedDate.toLocal()}".split(' ')[0],
+                                        style: TextStyle(fontSize: 16,color: Color.fromRGBO(1, 1 , 1, 1),),
+                                      ),
+
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(height: 8,),
                                 Row(
                                   children: [
                                     CustomTextWidget("Select Vehicle",
@@ -614,7 +669,9 @@ class _DayDetailPageState extends State<DayDetailPage> {
                                   color: Colors.deepOrangeAccent,
                                   textColor: Colors.white,
                                   child: new Text("Continue"),
-                                  onPressed: () => {},
+                                  onPressed: () => {
+                                  Get.to(FullBookingList())
+                                  },
                                   splashColor: Colors.redAccent,
                                 )
                               ],

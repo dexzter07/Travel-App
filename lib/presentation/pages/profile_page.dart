@@ -1,10 +1,12 @@
 import 'package:cab_booking/presentation/constants/app_constants.dart';
+import 'package:cab_booking/presentation/pages/authentication/login.dart';
 import 'package:cab_booking/presentation/pages/privacy_policy.dart';
 import 'package:cab_booking/presentation/styles/app_colors.dart';
 import 'package:cab_booking/presentation/styles/custom_text_style.dart';
 import 'package:cab_booking/presentation/widgets/custom_inkwell.dart';
 import 'package:cab_booking/presentation/widgets/custom_text_widget.dart';
 import 'package:cab_booking/presentation/widgets/user_profile_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:launch_review/launch_review.dart';
@@ -87,7 +89,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   },
                     child: UserProfileComponent(Title: "Help and Support",icon: Icon(Icons.help,color: AppColors.primaryColor,size: 17,),)),
                 InkWell(
-                    onTap: (){
+                    onTap: () async {
+                        await FirebaseAuth.instance.signOut();
+                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => Login()), (route) => false);
 
                     },
                     child: UserProfileComponent(Title: "Logout",icon: Icon(Icons.logout,color: AppColors.primaryColor,size: 17,),)),

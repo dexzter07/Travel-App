@@ -1,7 +1,6 @@
 import 'package:cab_booking/data/models/car_category_model.dart';
 import 'package:cab_booking/data/models/day_tour_model.dart';
 import 'package:cab_booking/presentation/constants/app_constants.dart';
-import 'package:cab_booking/presentation/pages/day_detail_page.dart';
 import 'package:cab_booking/presentation/styles/custom_text_style.dart';
 import 'package:cab_booking/presentation/widgets/custom_inkwell.dart';
 import 'package:cab_booking/presentation/widgets/custom_silver_grid_delegate.dart';
@@ -11,6 +10,7 @@ import 'package:cab_booking/presentation/widgets/product_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:get/get.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -40,6 +40,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.green,
         onPressed: ()async{
