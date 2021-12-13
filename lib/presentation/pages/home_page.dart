@@ -1,16 +1,20 @@
 import 'package:cab_booking/data/models/car_category_model.dart';
 import 'package:cab_booking/data/models/day_tour_model.dart';
 import 'package:cab_booking/presentation/constants/app_constants.dart';
+import 'package:cab_booking/presentation/pages/package_detail_page.dart';
 import 'package:cab_booking/presentation/styles/custom_text_style.dart';
 import 'package:cab_booking/presentation/widgets/custom_inkwell.dart';
 import 'package:cab_booking/presentation/widgets/custom_silver_grid_delegate.dart';
 import 'package:cab_booking/presentation/widgets/custom_text_widget.dart';
 import 'package:cab_booking/presentation/widgets/day_tour_widget.dart';
 import 'package:cab_booking/presentation/widgets/product_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:get/get.dart';
+
+import 'authentication/login.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -48,7 +52,7 @@ class _HomePageState extends State<HomePage> {
             await launch("https://wa.me/+918570836629");
           }
           else{
-            throw Exception("Cannot lanch the url");
+            throw Exception("Cannot launch the url");
           }
         },
         child: Padding(
@@ -68,18 +72,38 @@ class _HomePageState extends State<HomePage> {
               ),
               new Positioned(
                   width: 390,
-                  top: 60,
+                  top: 40,
+                  left: 30,
                   child: Padding(
                     padding: EdgeInsets.symmetric(
                         horizontal: AppConstants.screenHorizontalPadding,
                         vertical: AppConstants.screenVerticalPadding),
-                    child: Column(
+                    child: Row(
                       children: [
-                        CustomTextWidget("Book Your Cab",
-                            style: CustomTextStyle.boldTextStyle(
-                                color: Colors.white),
-                            alignText: true,
-                            textOverflow: null),
+                        Container(
+                          child: Image.asset(
+                            "assets/images/book_cab.png",
+                            fit: BoxFit.fitWidth,
+                            height: 110,
+                            width: 110,
+                          ),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomTextWidget("Book Your Cab",
+                                style: CustomTextStyle.boldTextStyle(
+                                    color: Colors.white),
+                                alignText: true,
+                                textOverflow: null),
+                            CustomTextWidget("Powered By Rumtek Technologies",
+                                style: CustomTextStyle.ultraSmallBoldTextStyle(
+                                    color: Colors.white),
+                                alignText: true,
+                                textOverflow: null),
+                          ],
+                        ),
+
 
 
                       ],
@@ -235,7 +259,9 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Spacer(),
                   CustomInkWell(
-                      onTap: () {},
+                      onTap: () {
+
+                      },
                       child: Text(
                         "View All",
                         style: CustomTextStyle.ultraSmallBoldTextStyle(
@@ -363,7 +389,14 @@ class _HomePageState extends State<HomePage> {
                             color: Colors.deepOrangeAccent,
                             textColor: Colors.white,
                             child: new Text("View Details"),
-                            onPressed: () => {},
+                            onPressed: () => {
+                              if(FirebaseAuth.instance.currentUser == null){
+                                Get.to(() => Login())
+                              }
+                              else{
+                                Navigator.push(context,MaterialPageRoute(builder: (context) => PackageDetailPage(station : "Lachung & Lachen 1 Night 2 Days")))
+                              }
+                            },
                             splashColor: Colors.redAccent,
                           )
                         ],
@@ -482,7 +515,14 @@ class _HomePageState extends State<HomePage> {
                             color: Colors.deepOrangeAccent,
                             textColor: Colors.white,
                             child: new Text("View Details"),
-                            onPressed: () => {},
+                            onPressed: () => {
+                              if(FirebaseAuth.instance.currentUser == null){
+                                Get.to(() => Login())
+                              }
+                              else{
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => PackageDetailPage()))
+                              }
+                            },
                             splashColor: Colors.redAccent,
                           )
                         ],

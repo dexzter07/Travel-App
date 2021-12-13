@@ -120,7 +120,7 @@ class FullBookingListWidget extends StatelessWidget {
                 Spacer(),
                 MaterialButton(onPressed: (){},
                   shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(22.0) ),
-                child: Text("3000", style: TextStyle(color: Colors.white),),
+                child: Text("₹ 3000.00", style: TextStyle(color: Colors.white),),
                   color: AppColors.primaryButtonColor,
                 )
               ],

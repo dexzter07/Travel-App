@@ -166,38 +166,7 @@ class _PermitFormWidgetState extends State<PermitFormWidget> {
             SizedBox(
               height: 10,
             ),
-            CustomTextWidget(
-              "Temporary Address",
-              style: CustomTextStyle.boldMediumTextStyle(color: Colors.black),
-              alignText: false,
-              textOverflow: null,
-            ),
-            CustomTextField(
-                contentPadding: EdgeInsets.all(10),
-                validator: () {},
-                obSecureText: false,
-                borderRadius: BorderRadius.circular(10),
-                maxLines: 2,
-                numberButton: false),
-            SizedBox(
-              height: 10,
-            ),
-            CustomTextWidget(
-              "Permanent Address",
-              style: CustomTextStyle.boldMediumTextStyle(color: Colors.black),
-              alignText: false,
-              textOverflow: null,
-            ),
-            CustomTextField(
-                contentPadding: EdgeInsets.all(10),
-                validator: () {},
-                obSecureText: false,
-                borderRadius: BorderRadius.circular(10),
-                maxLines: 2,
-                numberButton: false),
-            SizedBox(
-              height: 10,
-            ),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -209,8 +178,8 @@ class _PermitFormWidgetState extends State<PermitFormWidget> {
                       ? ClipRRect(
                           child: Image.file(
                             _image!,
-                            width: 100,
-                            height: 115.31,
+                            width: 50,
+                            height: 57,
                             fit: BoxFit.fitHeight,
                           ),
                         )
@@ -243,8 +212,8 @@ class _PermitFormWidgetState extends State<PermitFormWidget> {
                       ? ClipRRect(
                           child: Image.file(
                             _image1!,
-                            width: 150,
-                            height: 80,
+                            width: 75,
+                            height: 40,
                             fit: BoxFit.fitWidth,
                           ),
                         )
@@ -268,6 +237,40 @@ class _PermitFormWidgetState extends State<PermitFormWidget> {
                             ],
                           ),
                         ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    _showPicker(context);
+                  },
+                  child: _image1 != null
+                      ? ClipRRect(
+                    child: Image.file(
+                      _image1!,
+                      width: 75,
+                      height: 40,
+                      fit: BoxFit.fitWidth,
+                    ),
+                  )
+                      : Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(7)),
+                    child: Column(
+                      children: [
+                        Icon(
+                          Icons.add,
+                          size: 30,
+                          color: Color.fromRGBO(196, 196, 196, 1),
+                        ),
+                        Text(
+                          "Back Side if req.",
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),

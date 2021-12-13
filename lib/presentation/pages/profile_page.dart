@@ -3,7 +3,6 @@ import 'package:cab_booking/presentation/pages/authentication/login.dart';
 import 'package:cab_booking/presentation/pages/privacy_policy.dart';
 import 'package:cab_booking/presentation/styles/app_colors.dart';
 import 'package:cab_booking/presentation/styles/custom_text_style.dart';
-import 'package:cab_booking/presentation/widgets/custom_inkwell.dart';
 import 'package:cab_booking/presentation/widgets/custom_text_widget.dart';
 import 'package:cab_booking/presentation/widgets/user_profile_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:share/share.dart';
+import 'package:get/get.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -91,7 +91,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 InkWell(
                     onTap: () async {
                         await FirebaseAuth.instance.signOut();
-                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => Login()), (route) => false);
+                        Get.to(Login());
 
                     },
                     child: UserProfileComponent(Title: "Logout",icon: Icon(Icons.logout,color: AppColors.primaryColor,size: 17,),)),

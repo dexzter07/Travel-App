@@ -25,6 +25,8 @@ dependencies:
   pinput:
   image_picker:
   get:
+  razorpay_flutter:
+  fluttertoast:
 
 dev_dependencies:
   flutter_test:
@@ -38,6 +40,7 @@ flutter:
     - assets/images/
     - assets/images/car_category/
     - assets/images/day_tour/
+    - assets/images/package_tour/
 
   fonts:
     - family: PoppinsRegular

@@ -128,9 +128,8 @@ class _DayDetailPageState extends State<DayDetailPage> {
                         Text("luxury Vehicle",
                             style: CustomTextStyle.ultraSmallBoldTextStyle(
                                 color: Colors.black)),
-                        Text("N/A",
-                            style: CustomTextStyle.ultraSmallBoldTextStyle(
-                                color: Colors.redAccent)),
+                        Text("800",
+                            ),
                         Text("4000")
                       ]),
                       TableRow(children: [
