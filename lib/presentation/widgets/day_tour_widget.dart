@@ -10,7 +10,7 @@ import 'package:get/get.dart';
 
 class DayTourWidget extends StatelessWidget {
 
-  final DayTourModel? dayTourModel;
+  final DayTourListModel? dayTourModel;
   DayTourWidget({this.dayTourModel});
 
   @override
@@ -25,10 +25,8 @@ class DayTourWidget extends StatelessWidget {
           width: 160,
           child: Column(
             children: [
-              Image.asset(
-                dayTourModel!.imageUrl.toString(),
+              Image(image: NetworkImage("http://cabbooking.rumtektechnologies.com/admin/${dayTourModel!.image}"),
                 fit: BoxFit.cover,
-
                 height: 120,
               ),
               SizedBox(
@@ -43,7 +41,7 @@ class DayTourWidget extends StatelessWidget {
                 textOverflow: TextOverflow.visible,
               ),
               CustomTextWidget(
-                dayTourModel!.price.toString(),
+                "₹ ${dayTourModel!.discountPrice}/- per person",
                 style: CustomTextStyle.smallBoldTextStyle1(
                   color: Colors.green,
                 ),

@@ -1,3 +1,4 @@
+import 'package:cab_booking/data/data_providers/notification_api.dart';
 import 'package:cab_booking/presentation/constants/app_constants.dart';
 import 'package:cab_booking/presentation/screens/home_screen.dart';
 import 'package:cab_booking/presentation/styles/app_colors.dart';
@@ -8,8 +9,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class SuccessPage extends StatelessWidget {
+import 'home_page.dart';
+
+class SuccessPage extends StatefulWidget {
   const SuccessPage({Key? key}) : super(key: key);
+
+  @override
+  State<SuccessPage> createState() => _SuccessPageState();
+}
+
+class _SuccessPageState extends State<SuccessPage> {
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +57,8 @@ class SuccessPage extends StatelessWidget {
                     Text("Thank you!",style: CustomTextStyle.ultraBoldTextStyle1(color: AppColors.primaryColor, letterSpacing: 3),),
                     SizedBox(height: 10,),
                     CustomTextWidget("Package Booked Successfully",style: CustomTextStyle.boldMediumTextStyle(color: Colors.grey), textOverflow: null, alignText: false,) ,
+                    SizedBox(height: 10,),
+                    CustomTextWidget("We will get back to shortly with your travel details.",style: CustomTextStyle.boldMediumTextStyle(color: Colors.grey), textOverflow: null, alignText: false,) ,
                     SizedBox(height: 40,),
 
                     Padding(
@@ -56,6 +67,12 @@ class SuccessPage extends StatelessWidget {
                         title: "Done",
                         borderRadius: BorderRadius.circular(15),
                         onTap: (){
+                          NotificationApi.showNotification(
+                            title:"Booking Confirmed!",
+                            body:"Lachung 2 Days 1 Night, Vehicle No. Sk 01T 1234",
+                            payload:"Booking Confirmed!      Lachung 2 Days 1 Night, Vehicle No. Sk 01T 1234.        On Standard vehicle and Shared Vehicle Pickup And Drop will be from Stand",
+                              scheduleDate: DateTime.now().add(Duration(seconds: 12)),
+                          );
                           Navigator.push(context, MaterialPageRoute(builder:(context){return HomeScreen();}));
                         }, color: AppColors.primaryColor,
                       ),

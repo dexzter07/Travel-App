@@ -1,10 +1,45 @@
-import 'package:flutter/material.dart';
+// To parse this JSON data, do
+//
+//     final dayTourListModel = dayTourListModelFromJson(jsonString);
 
-class DayTourModel {
+import 'dart:convert';
 
-  final String? title;
-  final String? imageUrl;
-  final String? price;
-  DayTourModel({this.title,this.imageUrl,this.price});
+List<DayTourListModel> dayTourListModelFromJson(String str) => List<DayTourListModel>.from(json.decode(str).map((x) => DayTourListModel.fromJson(x)));
 
+String dayTourListModelToJson(List<DayTourListModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class DayTourListModel {
+  DayTourListModel({
+    required this.id,
+    required this.title,
+    required this.image,
+    required this.price,
+    required this.discountPrice,
+    required this.pointCovered,
+  });
+
+  String id;
+  String title;
+  String image;
+  String price;
+  String discountPrice;
+  String pointCovered;
+
+  factory DayTourListModel.fromJson(Map<String, dynamic> json) => DayTourListModel(
+    id: json["id"] == null ? null : json["id"],
+    title: json["title"] == null ? null : json["title"],
+    image: json["image"] == null ? null : json["image"],
+    price: json["price"] == null ? null : json["price"],
+    discountPrice: json["discount_price"] == null ? null : json["discount_price"],
+    pointCovered: json["point_covered"] == null ? null : json["point_covered"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id == null ? null : id,
+    "title": title == null ? null : title,
+    "image": image == null ? null : image,
+    "price": price == null ? null : price,
+    "discount_price": discountPrice == null ? null : discountPrice,
+    "point_covered": pointCovered == null ? null : pointCovered,
+  };
 }

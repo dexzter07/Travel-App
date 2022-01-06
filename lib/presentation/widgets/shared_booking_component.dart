@@ -1,6 +1,7 @@
 import 'package:cab_booking/presentation/styles/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class SharedBookingComponent extends StatelessWidget {
 
@@ -52,7 +53,7 @@ class SharedBookingComponent extends StatelessWidget {
               Row(
                 children: [
                   Text("₹ 1200",style: TextStyle(fontSize: 20),textScaleFactor: 1,),
-                  SizedBox(width: 240,),
+                  SizedBox(width: Get.width * 0.6,),
                   Container(
                       decoration: BoxDecoration(
                           color: AppColors.primaryButtonColor,

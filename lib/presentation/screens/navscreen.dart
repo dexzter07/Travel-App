@@ -72,7 +72,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
     return [
       HomePage(),
       MyTrip(),
-      NotificationView(),
+      NotificationView(payload: '',),
       ProfilePage()
     ];
   }

@@ -1,20 +1,18 @@
 import 'package:cab_booking/data/models/car_category_model.dart';
-import 'package:cab_booking/data/models/day_tour_model.dart';
+import 'package:cab_booking/logic/controllers/day_tour_list_controller.dart';
 import 'package:cab_booking/presentation/constants/app_constants.dart';
-import 'package:cab_booking/presentation/pages/package_detail_page.dart';
 import 'package:cab_booking/presentation/styles/custom_text_style.dart';
+import 'package:cab_booking/presentation/widgets/PackageComponent.dart';
 import 'package:cab_booking/presentation/widgets/custom_inkwell.dart';
 import 'package:cab_booking/presentation/widgets/custom_silver_grid_delegate.dart';
 import 'package:cab_booking/presentation/widgets/custom_text_widget.dart';
 import 'package:cab_booking/presentation/widgets/day_tour_widget.dart';
 import 'package:cab_booking/presentation/widgets/product_widget.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cab_booking/presentation/widgets/shimmer_effect_components.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:get/get.dart';
-
-import 'authentication/login.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -24,8 +22,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late bool _isLoading;
+  final DayTourListController _dayTourListController = Get.put(DayTourListController());
   List<ProductModel> _productList = [
-    ProductModel(imageUrl: "assets/images/car_category/bolero.png",title: "Standard Vehicle",subTitle: "10 Seats",desc: "Scoprio, Bolero, Tata Sumo"),
+    ProductModel(imageUrl: "assets/images/car_category/bolero.png",title: "Standard Vehicle",subTitle: "10 Seats",desc: "Scoprio, Bolero, etc"),
     ProductModel(imageUrl: "assets/images/car_category/mahi-xylo.png",title: "Luxury Vehicle",subTitle: "7 Seats",desc: "Xylo, Innova"),
 
   ];
@@ -34,13 +34,18 @@ class _HomePageState extends State<HomePage> {
     ProductModel(imageUrl: "assets/images/car_category/fortuner.png",title: "Super Luxury Vehicle",subTitle: "",desc: "Coming Soon!"),
 
   ];
-  List<DayTourModel> _dayTourList = [
-    DayTourModel(imageUrl: "assets/images/day_tour/gangtok.jpg",title: "Gangtok Sight Seeing", price: "1200 /- per person"),
-    DayTourModel(imageUrl: "assets/images/day_tour/changu.jpg",title: "Tsongmo Lake", price: "1000 /- per person"),
-    DayTourModel(imageUrl: "assets/images/day_tour/ranka.jpg",title: "Ranka Monastry", price: "900 /- per person"),
-    DayTourModel(imageUrl: "assets/images/day_tour/namchi.jpg",title: "Namchi Chardham", price: "2000 /- per person"),
 
-  ];
+  @override
+  void initState() {
+    _isLoading = true;
+    Future.delayed(const Duration(seconds: 5), () {
+      setState(() {
+        _isLoading = false;
+      });
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +65,31 @@ class _HomePageState extends State<HomePage> {
             child: Image.asset("assets/images/whatsapp.png")),
       ),
       body: SafeArea(
-      child: Container(
+      child: _isLoading == true ?
+      Center(
+        child: Container(
+          height: 70,
+          width: 70,
+          decoration: BoxDecoration(
+            color: Colors.grey.shade200,
+            borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.grey.withOpacity(0.3),
+                    blurRadius: 10,
+                    spreadRadius: 2,
+                    offset: const Offset(3, 3))
+              ]
+          ),
+          child: Container(
+            padding: const EdgeInsets.all(20.0),
+            child: CircularProgressIndicator(
+              color: Colors.deepOrangeAccent,
+            ),
+          ),
+        ),
+      ):
+      Container(
         child: ListView(
           children: [
             Stack(clipBehavior: Clip.none, children: [
@@ -223,18 +252,20 @@ class _HomePageState extends State<HomePage> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: GridView.builder(
+              child: Obx(() => _dayTourListController.isLoading.value == true ? Center(
+                child: CircularProgressIndicator(),
+              ): GridView.builder(
                   physics: ClampingScrollPhysics(),
                   shrinkWrap: true,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
                     crossAxisCount: 2,
-                    height: 235.0,
+                    height: 233.0,
                   ),
-                  itemCount: _dayTourList.length,
+                  itemCount: _dayTourListController.dayTourList.length,
                   itemBuilder: (context,index){
-                    return DayTourWidget(dayTourModel: _dayTourList[index],);
+                    return DayTourWidget(dayTourModel: _dayTourListController.dayTourList[index],);
                   }
-              ),
+              ),)
             ),
             Container(
               padding: EdgeInsets.symmetric(
@@ -270,387 +301,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              padding: EdgeInsets.symmetric(
-                horizontal: AppConstants.screenHorizontalPadding,
-              ),
-              child: Row(
-                children: [
-                  Card(
-                    child: Container(
-                      padding: EdgeInsets.only(left: 8),
-                      width: 280,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Image.asset(
-                            "assets/images/lachung.jpg",
-                            fit: BoxFit.cover,
-                            width: 270,
-                            height: 150,
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          CustomTextWidget(
-                            "Lachung & Lachen 1 Night 2 Days",
-                            style: CustomTextStyle.smallBoldTextStyle1(
-                              color: Colors.grey.shade800,
-                            ),
-                            alignText: false,
-                            textOverflow: TextOverflow.ellipsis,
-                          ),
-                          Text(
-                            "Starting from",
-                            style: TextStyle(color: Colors.grey, fontSize: 11),
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                "₹ 5000/-",
-                                style: CustomTextStyle.smallBoldTextStyle1(
-                                    color: Colors.green),
-                              ),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Text(
-                                "₹ 7000/-",
-                                style: CustomTextStyle.smallTextStyle1(
-                                    color: Colors.grey),
-                              ),
-                            ],
-                          ),
-                          Text(
-                            "Per Person",
-                            style: TextStyle(color: Colors.grey, fontSize: 11),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Column(
-                                children: [
-                                  Icon(
-                                    Icons.hotel,
-                                    color: Colors.grey.shade700,
-                                  ),
-                                  Text(
-                                    "Upto 3 Stars",
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 11),
-                                  )
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Icon(
-                                    Icons.flight,
-                                    color: Colors.grey.shade400,
-                                  ),
-                                  Text(
-                                    "Flight",
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 11),
-                                  )
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Icon(
-                                    Icons.restaurant,
-                                    color: Colors.grey.shade700,
-                                  ),
-                                  Text(
-                                    "Meals",
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 11),
-                                  )
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Icon(
-                                    Icons.directions_car,
-                                    color: Colors.grey.shade700,
-                                  ),
-                                  Text(
-                                    "Private Cab",
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 11),
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
-                          MaterialButton(
-                            height: 30.0,
-                            minWidth: 270.0,
-                            color: Colors.deepOrangeAccent,
-                            textColor: Colors.white,
-                            child: new Text("View Details"),
-                            onPressed: () => {
-                              if(FirebaseAuth.instance.currentUser == null){
-                                Get.to(() => Login())
-                              }
-                              else{
-                                Navigator.push(context,MaterialPageRoute(builder: (context) => PackageDetailPage(station : "Lachung & Lachen 1 Night 2 Days")))
-                              }
-                            },
-                            splashColor: Colors.redAccent,
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  Card(
-                    child: Container(
-                      padding: EdgeInsets.only(left: 8),
-                      width: 280,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Image.asset(
-                            "assets/images/lachung.jpg",
-                            fit: BoxFit.cover,
-                            width: 270,
-                            height: 150,
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          CustomTextWidget(
-                            "Lachung & Lachen 1 Night 2 Days",
-                            style: CustomTextStyle.smallBoldTextStyle1(
-                              color: Colors.grey.shade800,
-                            ),
-                            alignText: false,
-                            textOverflow: TextOverflow.ellipsis,
-                          ),
-                          Text(
-                            "Starting from",
-                            style: TextStyle(color: Colors.grey, fontSize: 11),
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                "₹ 5000/-",
-                                style: CustomTextStyle.smallBoldTextStyle1(
-                                    color: Colors.green),
-                              ),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Text(
-                                "₹ 7000/-",
-                                style: CustomTextStyle.smallTextStyle1(
-                                    color: Colors.grey),
-                              ),
-                            ],
-                          ),
-                          Text(
-                            "Per Person",
-                            style: TextStyle(color: Colors.grey, fontSize: 11),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Column(
-                                children: [
-                                  Icon(
-                                    Icons.hotel,
-                                    color: Colors.grey.shade700,
-                                  ),
-                                  Text(
-                                    "Upto 3 Stars",
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 11),
-                                  )
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Icon(
-                                    Icons.flight,
-                                    color: Colors.grey.shade400,
-                                  ),
-                                  Text(
-                                    "Flight",
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 11),
-                                  )
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Icon(
-                                    Icons.restaurant,
-                                    color: Colors.grey.shade700,
-                                  ),
-                                  Text(
-                                    "Meals",
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 11),
-                                  )
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Icon(
-                                    Icons.directions_car,
-                                    color: Colors.grey.shade700,
-                                  ),
-                                  Text(
-                                    "Private Cab",
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 11),
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
-                          MaterialButton(
-                            height: 30.0,
-                            minWidth: 270.0,
-                            color: Colors.deepOrangeAccent,
-                            textColor: Colors.white,
-                            child: new Text("View Details"),
-                            onPressed: () => {
-                              if(FirebaseAuth.instance.currentUser == null){
-                                Get.to(() => Login())
-                              }
-                              else{
-                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => PackageDetailPage()))
-                              }
-                            },
-                            splashColor: Colors.redAccent,
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  Card(
-                    child: Container(
-                      padding: EdgeInsets.only(left: 8),
-                      width: 280,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Image.asset(
-                            "assets/images/lachung.jpg",
-                            fit: BoxFit.cover,
-                            width: 270,
-                            height: 150,
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          CustomTextWidget(
-                            "Lachung & Lachen 1 Night 2 Days",
-                            style: CustomTextStyle.smallBoldTextStyle1(
-                              color: Colors.grey.shade800,
-                            ),
-                            alignText: false,
-                            textOverflow: TextOverflow.ellipsis,
-                          ),
-                          Text(
-                            "Starting from",
-                            style: TextStyle(color: Colors.grey, fontSize: 11),
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                "₹ 5000/-",
-                                style: CustomTextStyle.smallBoldTextStyle1(
-                                    color: Colors.green),
-                              ),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Text(
-                                "₹ 7000/-",
-                                style: CustomTextStyle.smallTextStyle1(
-                                    color: Colors.grey),
-                              ),
-                            ],
-                          ),
-                          Text(
-                            "Per Person",
-                            style: TextStyle(color: Colors.grey, fontSize: 11),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Column(
-                                children: [
-                                  Icon(
-                                    Icons.hotel,
-                                    color: Colors.grey.shade700,
-                                  ),
-                                  Text(
-                                    "Upto 3 Stars",
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 11),
-                                  )
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Icon(
-                                    Icons.flight,
-                                    color: Colors.grey.shade400,
-                                  ),
-                                  Text(
-                                    "Flight",
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 11),
-                                  )
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Icon(
-                                    Icons.restaurant,
-                                    color: Colors.grey.shade700,
-                                  ),
-                                  Text(
-                                    "Meals",
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 11),
-                                  )
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Icon(
-                                    Icons.directions_car,
-                                    color: Colors.grey.shade700,
-                                  ),
-                                  Text(
-                                    "Private Cab",
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 11),
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
-                          MaterialButton(
-                            height: 30.0,
-                            minWidth: 270.0,
-                            color: Colors.deepOrangeAccent,
-                            textColor: Colors.white,
-                            child: new Text("View Details"),
-                            onPressed: () => {},
-                            splashColor: Colors.redAccent,
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            PackageComponent(),
             Container(
               padding: EdgeInsets.symmetric(
                   horizontal: AppConstants.screenHorizontalPadding,
@@ -783,6 +434,48 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       ),
+    );
+  }
+}
+
+
+
+class NewsCardSkelton extends StatelessWidget {
+  const NewsCardSkelton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        const Skeleton(height: 120, width: 120),
+        const SizedBox(width: 16),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Skeleton(width: 80),
+              const SizedBox(height: 16 / 2),
+              const Skeleton(),
+              const SizedBox(height: 16 / 2),
+              const Skeleton(),
+              const SizedBox(height: 16 / 2),
+              Row(
+                children: const [
+                  Expanded(
+                    child: Skeleton(),
+                  ),
+                  SizedBox(width: 16),
+                  Expanded(
+                    child: Skeleton(),
+                  ),
+                ],
+              )
+            ],
+          ),
+        )
+      ],
     );
   }
 }

@@ -5,7 +5,14 @@ import 'package:cab_booking/presentation/widgets/custom_appbar.dart';
 import 'package:cab_booking/presentation/widgets/custom_inkwell.dart';
 import 'package:flutter/material.dart';
 
-class NotificationView extends StatelessWidget {
+class NotificationView extends StatefulWidget {
+  final String? payload;
+  const NotificationView({required this.payload});
+  @override
+  State<NotificationView> createState() => _NotificationViewState();
+}
+
+class _NotificationViewState extends State<NotificationView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,6 +28,7 @@ class NotificationView extends StatelessWidget {
                       Column(
                         children: [
                           Text("1 July 2020",style: CustomTextStyle.smallTextStyle1(color: Colors.grey),),
+                          Text(widget.payload.toString(),style: TextStyle(fontSize: 30,color: Colors.red),),
                           CustomNotificationContainer(),
                           CustomNotificationContainer()
                         ],
