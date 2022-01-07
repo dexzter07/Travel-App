@@ -10,7 +10,7 @@ class CustomCarousel extends StatelessWidget {
     return Container(
         child: CustomInkWell(
           onTap: () {},
-          child: Image.asset(image.imageUrl, fit: BoxFit.cover, width: MediaQuery.of(context).size.width *1 ,),
+          child: Image.network(image.imageUrl, fit: BoxFit.cover, width: MediaQuery.of(context).size.width *1 ,),
         )
     );
   }

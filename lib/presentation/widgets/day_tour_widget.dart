@@ -60,7 +60,16 @@ class DayTourWidget extends StatelessWidget {
                     Get.to(() => Login())
                   }
                   else{
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => DayDetailPage()))
+                    Get.to(DayDetailPage(
+                        id:dayTourModel!.id,
+                        name:dayTourModel!.title,
+                        image:dayTourModel!.image,
+                        image2:dayTourModel!.image2,
+                        image3:dayTourModel!.image3,
+                        vehicleType:dayTourModel!.id,
+                        discountPrice:dayTourModel!.discountPrice,
+                        pointsCovered: dayTourModel!.pointCovered,
+                    ))
                   }
                 },
                 splashColor: Colors.redAccent,

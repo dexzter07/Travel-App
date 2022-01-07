@@ -13,7 +13,15 @@ import 'package:url_launcher/url_launcher.dart';
 import 'full_booking_list.dart';
 
 class DayDetailPage extends StatefulWidget {
-  const DayDetailPage({Key? key}) : super(key: key);
+  String? id;
+  String? name;
+  String? image;
+  String? image2;
+  String? image3;
+  String? discountPrice;
+  String? vehicleType;
+  String? pointsCovered;
+   DayDetailPage({this.id,this.name,this.image,this.image2,this.image3,this.discountPrice,this.vehicleType,this.pointsCovered});
 
   @override
   _DayDetailPageState createState() => _DayDetailPageState();
@@ -22,10 +30,10 @@ class DayDetailPage extends StatefulWidget {
 class _DayDetailPageState extends State<DayDetailPage> {
   String? _select;
   String? _selectPerson = "1";
-  List<CarouselModel> _carouselModel = [
-    CarouselModel(imageUrl: "assets/images/day_tour/gangtok.jpg"),
-    CarouselModel(imageUrl: "assets/images/day_tour/deorali.jpg"),
-    CarouselModel(imageUrl: "assets/images/day_tour/changu.jpg"),
+  late List<CarouselModel> _carouselModel = [
+    CarouselModel(imageUrl: "http://cabbooking.rumtektechnologies.com/admin/${widget.image}"),
+    CarouselModel(imageUrl: "http://cabbooking.rumtektechnologies.com/admin/${widget.image2}"),
+    CarouselModel(imageUrl: "http://cabbooking.rumtektechnologies.com/admin/${widget.image3}"),
   ];
   DateTime selectedDate = DateTime.now();
 
@@ -80,11 +88,11 @@ class _DayDetailPageState extends State<DayDetailPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CustomTextWidget("Rate Chart for Gangtok Tour",
+                  CustomTextWidget("Rate Chart for ${widget.name}",
                       style: CustomTextStyle.boldMediumTextStyle(
                           color: Colors.black),
                       alignText: false,
-                      textOverflow: null),
+                      textOverflow: TextOverflow.ellipsis),
                   SizedBox(
                     height: 8,
                   ),
@@ -292,7 +300,7 @@ class _DayDetailPageState extends State<DayDetailPage> {
                                         isExpanded: false,
                                         underline: SizedBox(),
                                         borderRadius: BorderRadius.circular(20),
-                                        hint: Text("Luxury 7 Seats",
+                                        hint: Text("${widget.vehicleType}",
                                             style: TextStyle(
                                               fontWeight: FontWeight.w500,
                                               fontSize: 14,
@@ -701,7 +709,7 @@ class _DayDetailPageState extends State<DayDetailPage> {
                     children: [
                       Flexible(
                         child: ReadMoreText(
-                          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+                          "${widget.pointsCovered}",
                           style: CustomTextStyle.smallTextStyle1(
                               color: Colors.grey),
                           trimLines: 3,
