@@ -1,13 +1,18 @@
 import 'package:cab_booking/data/models/carousel_model.dart';
+import 'package:cab_booking/data/models/day_tour_rate_chart_model.dart';
+import 'package:cab_booking/logic/controllers/day_tour_list_controller.dart';
+import 'package:cab_booking/logic/controllers/day_tour_rate_chart_controller.dart';
 import 'package:cab_booking/presentation/pages/shared_booking_list.dart';
 import 'package:cab_booking/presentation/styles/custom_text_style.dart';
 import 'package:cab_booking/presentation/widgets/carousel_widget.dart';
 import 'package:cab_booking/presentation/widgets/custom_text_widget.dart';
+import 'package:cab_booking/presentation/widgets/day_tour_rate_chart_widget.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:get/get.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:readmore/readmore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'full_booking_list.dart';
@@ -21,13 +26,15 @@ class DayDetailPage extends StatefulWidget {
   String? discountPrice;
   String? vehicleType;
   String? pointsCovered;
-   DayDetailPage({this.id,this.name,this.image,this.image2,this.image3,this.discountPrice,this.vehicleType,this.pointsCovered});
+  DayDetailPage({this.id,this.name,this.image,this.image2,this.image3,this.discountPrice,this.vehicleType,this.pointsCovered});
 
   @override
   _DayDetailPageState createState() => _DayDetailPageState();
 }
 
 class _DayDetailPageState extends State<DayDetailPage> {
+  DayTourRateController _dayTourRateController = Get.put(DayTourRateController());
+
   String? _select;
   String? _selectPerson = "1";
   late List<CarouselModel> _carouselModel = [
@@ -105,54 +112,25 @@ class _DayDetailPageState extends State<DayDetailPage> {
                           style: CustomTextStyle.ultraSmallBoldTextStyle(
                               color: Colors.black),
                         ),
-                        Text("Shared per person",
+                        Text("Shared",
                             style: CustomTextStyle.ultraSmallBoldTextStyle(
                                 color: Colors.black)),
-                        Text("Reserved",
+                        Text("Booking",
                             style: CustomTextStyle.ultraSmallBoldTextStyle(
                                 color: Colors.black))
                       ]),
-                      TableRow(children: [
-                        Text("Small Vehicle",
-                            style: CustomTextStyle.ultraSmallBoldTextStyle(
-                                color: Colors.black)),
-                        Text(
-                          "N/A",
-                            style: CustomTextStyle.ultraSmallBoldTextStyle(
-                                color: Colors.red)
-                        ),
-                        Text("2000")
-                      ]),
-                      TableRow(children: [
-                        Text("Standard Vehicle",
-                            style: CustomTextStyle.ultraSmallBoldTextStyle(
-                                color: Colors.black)),
-                        Text(
-                          "300",
-                        ),
-                        Text("3000")
-                      ]),
-                      TableRow(children: [
-                        Text("luxury Vehicle",
-                            style: CustomTextStyle.ultraSmallBoldTextStyle(
-                                color: Colors.black)),
-                        Text("800",
-                            ),
-                        Text("4000")
-                      ]),
-                      TableRow(children: [
-                        Text("Super Luxury",
-                            style: CustomTextStyle.ultraSmallBoldTextStyle(
-                                color: Colors.black)),
-                        Text("Coming Soon!",
-                            style: CustomTextStyle.ultraSmallBoldTextStyle(
-                                color: Colors.green)),
-                        Text("Coming Soon!",
-                            style: CustomTextStyle.ultraSmallBoldTextStyle(
-                                color: Colors.green)),
-                      ]),
                     ],
                   ),
+                  Obx(() => _dayTourRateController.isLoading.value == true? Center(
+                    child: CircularProgressIndicator(),
+                  ) : ListView.builder(
+                      physics: ClampingScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: _dayTourRateController.dayTourRateChartList.length,
+                      itemBuilder: (context,index){
+                        return DayTourRateChartWidget(dayRateChartModel: _dayTourRateController.dayTourRateChartList[index],);
+                      }
+                  ),)
                 ],
               ),
             ),

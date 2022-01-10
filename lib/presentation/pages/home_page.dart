@@ -1,9 +1,10 @@
 import 'package:cab_booking/data/models/car_category_model.dart';
 import 'package:cab_booking/logic/controllers/day_tour_list_controller.dart';
 import 'package:cab_booking/presentation/constants/app_constants.dart';
+import 'package:cab_booking/presentation/pages/day_tour_list.dart';
+import 'package:cab_booking/presentation/pages/package_tour_list.dart';
 import 'package:cab_booking/presentation/styles/custom_text_style.dart';
 import 'package:cab_booking/presentation/widgets/PackageComponent.dart';
-import 'package:cab_booking/presentation/widgets/custom_inkwell.dart';
 import 'package:cab_booking/presentation/widgets/custom_silver_grid_delegate.dart';
 import 'package:cab_booking/presentation/widgets/custom_text_widget.dart';
 import 'package:cab_booking/presentation/widgets/day_tour_widget.dart';
@@ -38,7 +39,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     _isLoading = true;
-    Future.delayed(const Duration(seconds: 5), () {
+    Future.delayed(const Duration(seconds: 3), () {
       setState(() {
         _isLoading = false;
       });
@@ -240,7 +241,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   InkWell(
                       onTap: () {
-
+                        Get.to(DayTourList());
                       },
                       child: Text(
                         "View All",
@@ -289,9 +290,9 @@ class _HomePageState extends State<HomePage> {
                     textOverflow: null,
                   ),
                   Spacer(),
-                  CustomInkWell(
+                  InkWell(
                       onTap: () {
-
+                        Get.to(PackageTourList());
                       },
                       child: Text(
                         "View All",

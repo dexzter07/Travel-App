@@ -22,7 +22,7 @@ class PackageTourComponents extends StatelessWidget {
           children: [
             Image(image: NetworkImage("http://cabbooking.rumtektechnologies.com/admin/${packageTourModel!.image}"),
               fit: BoxFit.cover,
-              width: 270,
+              width: double.infinity,
               height: 150,
             ),
             SizedBox(
@@ -122,7 +122,7 @@ class PackageTourComponents extends StatelessWidget {
             ),
             MaterialButton(
               height: 30.0,
-              minWidth: 270.0,
+              minWidth: double.infinity,
               color: Colors.deepOrangeAccent,
               textColor: Colors.white,
               child: new Text("View Details"),
@@ -131,7 +131,15 @@ class PackageTourComponents extends StatelessWidget {
                   Get.to(() => Login())
                 }
                 else{
-                  Navigator.push(context,MaterialPageRoute(builder: (context) => PackageDetailPage(station : "Lachung & Lachen 1 Night 2 Days")))
+                  Get.to(PackageDetailPage(
+                    id:packageTourModel!.id,
+                    name:packageTourModel!.title,
+                    image:packageTourModel!.image,
+                    image2:packageTourModel!.image,
+                    image3:packageTourModel!.image,
+                    vehicleType:packageTourModel!.id,
+                    discountPrice:packageTourModel!.discountPrice,
+                  ))
                 }
               },
               splashColor: Colors.redAccent,

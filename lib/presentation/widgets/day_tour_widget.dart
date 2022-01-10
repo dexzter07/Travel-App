@@ -1,10 +1,10 @@
-import 'package:cab_booking/data/models/car_category_model.dart';
 import 'package:cab_booking/data/models/day_tour_model.dart';
 import 'package:cab_booking/presentation/pages/authentication/login.dart';
 import 'package:cab_booking/presentation/pages/day_detail_page.dart';
 import 'package:cab_booking/presentation/styles/custom_text_style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'custom_text_widget.dart';
 import 'package:get/get.dart';
 
@@ -54,10 +54,12 @@ class DayTourWidget extends StatelessWidget {
                 color: Colors.deepOrangeAccent,
                 textColor: Colors.white,
                 child: new Text("Book Now"),
-                onPressed: () =>
+                onPressed: () async
                 {
+                  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                  sharedPreferences.setString("id", dayTourModel!.id);
                   if(FirebaseAuth.instance.currentUser == null){
-                    Get.to(() => Login())
+                    Get.to(() => Login());
                   }
                   else{
                     Get.to(DayDetailPage(
@@ -69,7 +71,7 @@ class DayTourWidget extends StatelessWidget {
                         vehicleType:dayTourModel!.id,
                         discountPrice:dayTourModel!.discountPrice,
                         pointsCovered: dayTourModel!.pointCovered,
-                    ))
+                    ));
                   }
                 },
                 splashColor: Colors.redAccent,

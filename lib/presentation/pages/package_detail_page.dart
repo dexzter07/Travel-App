@@ -16,8 +16,14 @@ import 'package:get/get.dart';
 import 'full_booking_list.dart';
 
 class PackageDetailPage extends StatefulWidget {
-  final String? station;
-  const PackageDetailPage({this.station});
+  String? id;
+  String? name;
+  String? image;
+  String? image2;
+  String? image3;
+  String? discountPrice;
+  String? vehicleType;
+  PackageDetailPage({this.id,this.name,this.image,this.image2,this.image3,this.vehicleType,this.discountPrice});
 
   @override
   _PackageDetailPageState createState() => _PackageDetailPageState();
@@ -30,10 +36,10 @@ class _PackageDetailPageState extends State<PackageDetailPage> {
   String? _select;
   String? _selectPerson = "1";
 
-  List<CarouselModel> _carouselModel = [
-    CarouselModel(imageUrl: "assets/images/lachung.jpg"),
-    CarouselModel(imageUrl: "assets/images/package_tour/lachen.jpg"),
-    CarouselModel(imageUrl: "assets/images/package_tour/yumthang.jpg"),
+  late List<CarouselModel> _carouselModel = [
+    CarouselModel(imageUrl: "http://cabbooking.rumtektechnologies.com/admin/${widget.image}"),
+    CarouselModel(imageUrl: "http://cabbooking.rumtektechnologies.com/admin/${widget.image}"),
+    CarouselModel(imageUrl: "http://cabbooking.rumtektechnologies.com/admin/${widget.image}"),
   ];
   DateTime selectedDate = DateTime.now();
 
@@ -267,7 +273,7 @@ class _PackageDetailPageState extends State<PackageDetailPage> {
                   vertical: AppConstants.screenVerticalPadding),
               color: Colors.white,
               child: CustomTextWidget(
-                widget.station.toString(),
+                widget.name.toString(),
                 textOverflow: null,
                 alignText: false,
                 style: CustomTextStyle.boldMediumTextStyle(color: Colors.black),
