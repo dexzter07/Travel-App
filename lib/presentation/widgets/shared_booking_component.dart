@@ -1,11 +1,12 @@
+import 'package:cab_booking/data/models/avail_day_tour_shared_cab_model.dart';
 import 'package:cab_booking/presentation/styles/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SharedBookingComponent extends StatelessWidget {
-
-
+  final AvailDayTourSharedCabModel? availDayTourSharedCabModel;
+  SharedBookingComponent({this.availDayTourSharedCabModel});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,30 +30,24 @@ class SharedBookingComponent extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Gangtok -> Tsango -> Baba Mandir -> Gangtok",style: TextStyle(fontSize: 14),textScaleFactor: 1,),
+              Text(availDayTourSharedCabModel!.title,style: TextStyle(fontSize: 14),textScaleFactor: 1,),
               SizedBox(height: 8,),
-              Row(
-                children: [
-                  Text("6:30 am",style: TextStyle(fontSize: 20),textScaleFactor: 1,),
-                  SizedBox(width: 10,),
-                  Text(" - ",style: TextStyle(fontSize: 20),textScaleFactor: 1,),
-                  SizedBox(width: 10,),
-                  Text("4:30 pm ",style: TextStyle(fontSize: 20),textScaleFactor: 1,),
-                ],
-              ),
+              Text(availDayTourSharedCabModel!.timing,style: TextStyle(fontSize: 20),textScaleFactor: 1,),
+
+
               SizedBox(height: 10,),
               Row(
                 children: [
-                  Text("Maruti Wagon-R",style: TextStyle(fontSize: 18),textScaleFactor: 1,),
+                  Text(availDayTourSharedCabModel!.vehicleModel,style: TextStyle(fontSize: 18),textScaleFactor: 1,),
                   SizedBox(width: 100,),
-                  Text("4 seats",style: TextStyle(fontSize: 18),textScaleFactor: 1,),
+                  Text("${availDayTourSharedCabModel!.totalSeat} available",style: TextStyle(fontSize: 18),textScaleFactor: 1,),
                 ],
               ),
               SizedBox(height: 10,),
 
               Row(
                 children: [
-                  Text("₹ 1200",style: TextStyle(fontSize: 20),textScaleFactor: 1,),
+                  Text("₹ ${availDayTourSharedCabModel!.price}",style: TextStyle(fontSize: 20),textScaleFactor: 1,),
                   SizedBox(width: Get.width * 0.6,),
                   Container(
                       decoration: BoxDecoration(

@@ -56,7 +56,7 @@ class _CarWidgetState extends State<CarWidget> {
           ),
           Positioned(
             top: 180,
-            left: 110,
+            left: 95,
             child: Column(
               children: [
                 Row(

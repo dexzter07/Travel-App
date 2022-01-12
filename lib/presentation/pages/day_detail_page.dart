@@ -1,7 +1,6 @@
 import 'package:cab_booking/data/models/carousel_model.dart';
-import 'package:cab_booking/data/models/day_tour_rate_chart_model.dart';
-import 'package:cab_booking/logic/controllers/day_tour_list_controller.dart';
 import 'package:cab_booking/logic/controllers/day_tour_rate_chart_controller.dart';
+import 'package:cab_booking/logic/controllers/shared_booking_controller.dart';
 import 'package:cab_booking/presentation/pages/shared_booking_list.dart';
 import 'package:cab_booking/presentation/styles/custom_text_style.dart';
 import 'package:cab_booking/presentation/widgets/carousel_widget.dart';
@@ -12,8 +11,8 @@ import 'package:get/get.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:readmore/readmore.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:intl/intl.dart';
 
 import 'full_booking_list.dart';
 
@@ -26,31 +25,70 @@ class DayDetailPage extends StatefulWidget {
   String? discountPrice;
   String? vehicleType;
   String? pointsCovered;
-  DayDetailPage({this.id,this.name,this.image,this.image2,this.image3,this.discountPrice,this.vehicleType,this.pointsCovered});
+  DayDetailPage(
+      {this.id,
+      this.name,
+      this.image,
+      this.image2,
+      this.image3,
+      this.discountPrice,
+      this.vehicleType,
+      this.pointsCovered});
 
   @override
   _DayDetailPageState createState() => _DayDetailPageState();
 }
 
 class _DayDetailPageState extends State<DayDetailPage> {
-  DayTourRateController _dayTourRateController = Get.put(DayTourRateController());
+  DayTourRateController _dayTourRateController =
+      Get.put(DayTourRateController());
+  SharedBookingController _sharedBookingController =
+      Get.put(SharedBookingController());
 
   String? _select;
   String? _selectPerson = "1";
   late List<CarouselModel> _carouselModel = [
-    CarouselModel(imageUrl: "http://cabbooking.rumtektechnologies.com/admin/${widget.image}"),
-    CarouselModel(imageUrl: "http://cabbooking.rumtektechnologies.com/admin/${widget.image2}"),
-    CarouselModel(imageUrl: "http://cabbooking.rumtektechnologies.com/admin/${widget.image3}"),
+    CarouselModel(
+        imageUrl:
+            "http://cabbooking.rumtektechnologies.com/admin/${widget.image}"),
+    CarouselModel(
+        imageUrl:
+            "http://cabbooking.rumtektechnologies.com/admin/${widget.image2}"),
+    CarouselModel(
+        imageUrl:
+            "http://cabbooking.rumtektechnologies.com/admin/${widget.image3}"),
   ];
   DateTime selectedDate = DateTime.now();
 
   _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(context: context, initialDate: selectedDate, firstDate: DateTime(2021), lastDate: DateTime(2022));
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        builder: (context,child){
+          return Theme(
+              data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: Colors.deepOrangeAccent, // header background color
+              onPrimary: Colors.white, // header text color
+              onSurface: Colors.black, // body text color
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                primary: Colors.deepOrangeAccent, // button text color
+              ),
+            ),
+          ), child: child!,
+          );
+        },
+        initialDate: selectedDate,
+        firstDate: DateTime.now(),
+        lastDate: DateTime.now().add(Duration(days: 7)),);
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;
+        _sharedBookingController.travelDate.value = selectedDate.toString();
       });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,16 +159,23 @@ class _DayDetailPageState extends State<DayDetailPage> {
                       ]),
                     ],
                   ),
-                  Obx(() => _dayTourRateController.isLoading.value == true? Center(
-                    child: CircularProgressIndicator(),
-                  ) : ListView.builder(
-                      physics: ClampingScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: _dayTourRateController.dayTourRateChartList.length,
-                      itemBuilder: (context,index){
-                        return DayTourRateChartWidget(dayRateChartModel: _dayTourRateController.dayTourRateChartList[index],);
-                      }
-                  ),)
+                  Obx(
+                    () => _dayTourRateController.isLoading.value == true
+                        ? Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : ListView.builder(
+                            physics: ClampingScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: _dayTourRateController
+                                .dayTourRateChartList.length,
+                            itemBuilder: (context, index) {
+                              return DayTourRateChartWidget(
+                                dayRateChartModel: _dayTourRateController
+                                    .dayTourRateChartList[index],
+                              );
+                            }),
+                  )
                 ],
               ),
             ),
@@ -165,8 +210,8 @@ class _DayDetailPageState extends State<DayDetailPage> {
                         children: [
                           //  Shared Booking
                           Container(
-                            margin:
-                                EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 0, vertical: 0),
                             padding: EdgeInsets.all(8),
                             decoration: BoxDecoration(
                               color: Colors.white,
@@ -176,8 +221,9 @@ class _DayDetailPageState extends State<DayDetailPage> {
                                 Row(
                                   children: [
                                     CustomTextWidget("One Day Tour",
-                                        style: CustomTextStyle.boldMediumTextStyle(
-                                            color: Colors.black),
+                                        style:
+                                            CustomTextStyle.boldMediumTextStyle(
+                                                color: Colors.black),
                                         alignText: false,
                                         textOverflow: null),
                                     CustomTextWidget("- Shared Booking",
@@ -187,7 +233,9 @@ class _DayDetailPageState extends State<DayDetailPage> {
                                         textOverflow: null),
                                   ],
                                 ),
-                                SizedBox(height: 10,),
+                                SizedBox(
+                                  height: 10,
+                                ),
                                 Row(
                                   children: [
                                     CustomTextWidget("Total No. of Person",
@@ -198,7 +246,8 @@ class _DayDetailPageState extends State<DayDetailPage> {
                                     Spacer(),
                                     Container(
                                       height: 30,
-                                      padding: EdgeInsets.symmetric(horizontal: 4),
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 4),
                                       decoration: BoxDecoration(
                                           border: Border.all(
                                               color: Colors.grey.shade300)),
@@ -231,6 +280,9 @@ class _DayDetailPageState extends State<DayDetailPage> {
                                         onChanged: (newValue) {
                                           setState(() {
                                             _selectPerson = newValue;
+                                            _sharedBookingController
+                                                    .numOfPerson.value =
+                                                _selectPerson.toString();
                                           });
                                         },
                                         value: _selectPerson,
@@ -238,28 +290,39 @@ class _DayDetailPageState extends State<DayDetailPage> {
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 8,),
+                                SizedBox(
+                                  height: 8,
+                                ),
                                 InkWell(
                                   onTap: () => _selectDate(context),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       CustomTextWidget("Travel Date",
-                                          style: CustomTextStyle.mediumTextStyle(
-                                              color: Colors.black),
+                                          style:
+                                              CustomTextStyle.mediumTextStyle(
+                                                  color: Colors.black),
                                           alignText: false,
                                           textOverflow: null),
                                       Spacer(),
-                                      Icon(Icons.calendar_today, size: 17,),
-                                      Text(
-                                        "${selectedDate.toLocal()}".split(' ')[0],
-                                        style: TextStyle(fontSize: 16,color: Color.fromRGBO(1, 1 , 1, 1),),
+                                      Icon(
+                                        Icons.calendar_today,
+                                        size: 17,
                                       ),
-
+                                      Text(
+                                        "${selectedDate.toLocal()}"
+                                            .split(' ')[0],
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: Color.fromRGBO(1, 1, 1, 1),
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
-                                SizedBox(height: 8,),
+                                SizedBox(
+                                  height: 8,
+                                ),
                                 Row(
                                   children: [
                                     CustomTextWidget("Select Vehicle",
@@ -270,7 +333,8 @@ class _DayDetailPageState extends State<DayDetailPage> {
                                     Spacer(),
                                     Container(
                                       height: 30,
-                                      padding: EdgeInsets.symmetric(horizontal: 4),
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 4),
                                       decoration: BoxDecoration(
                                           border: Border.all(
                                               color: Colors.grey.shade300)),
@@ -278,16 +342,18 @@ class _DayDetailPageState extends State<DayDetailPage> {
                                         isExpanded: false,
                                         underline: SizedBox(),
                                         borderRadius: BorderRadius.circular(20),
-                                        hint: Text("${widget.vehicleType}",
+                                        hint: Text(
+                                            _sharedBookingController
+                                                .vehicleType.value,
                                             style: TextStyle(
                                               fontWeight: FontWeight.w500,
                                               fontSize: 14,
                                             )),
                                         items: <String>[
-                                          "Small 4 Seats",
-                                          "Large 10 Seats",
-                                          "Luxury 7 Seats",
-                                          "Super Luxury 4 Seats"
+                                          "Small",
+                                          "Standard",
+                                          "Luxury",
+                                          "Super Luxury"
                                         ].map((String value) {
                                           return DropdownMenuItem<String>(
                                             value: value,
@@ -296,10 +362,14 @@ class _DayDetailPageState extends State<DayDetailPage> {
                                         }).toList(),
                                         onChanged: (newVal) {
                                           setState(() {
-                                            _select = newVal;
+                                            _sharedBookingController.vehicleType
+                                                .value = newVal.toString();
                                           });
+                                          _sharedBookingController
+                                              .addDataAndFetch();
                                         },
-                                        value: _select,
+                                        value: _sharedBookingController
+                                            .vehicleType.value,
                                       ),
                                     ),
                                   ],
@@ -307,96 +377,77 @@ class _DayDetailPageState extends State<DayDetailPage> {
                                 SizedBox(
                                   height: 10,
                                 ),
-                                Row(
-                                  children: [
-                                    CustomTextWidget("Price",
-                                        style: CustomTextStyle.mediumTextStyle(
-                                            color: Colors.black),
-                                        alignText: false,
-                                        textOverflow: null),
-                                    Spacer(),
-                                    _select == "Small 4 Seats"
-                                        ? CustomTextWidget("1000 /-",
-                                            style:
-                                                CustomTextStyle.boldMediumTextStyle(
-                                                    color: Colors.green),
-                                            alignText: false,
-                                            textOverflow: null)
-                                        : _select == "Large 10 Seats"
-                                            ? CustomTextWidget("500 /-",
-                                                style: CustomTextStyle
-                                                    .boldMediumTextStyle(
-                                                        color: Colors.green),
-                                                alignText: false,
-                                                textOverflow: null)
-                                            : _select == "Luxury 7 Seats"
-                                                ? CustomTextWidget("800 /-",
+                                Obx(
+                                  () => _sharedBookingController
+                                              .isLoading.value ==
+                                          true
+                                      ? Center(
+                                          child: Text("Please wait...",style: TextStyle(color: Colors.grey),)
+                                        )
+                                      : Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                CustomTextWidget("Price",
                                                     style: CustomTextStyle
-                                                        .boldMediumTextStyle(
-                                                            color: Colors.green),
-                                                    alignText: false,
-                                                    textOverflow: null)
-                                                : CustomTextWidget("1200 /-",
-                                                    style: CustomTextStyle
-                                                        .boldMediumTextStyle(
-                                                            color: Colors.green),
+                                                        .mediumTextStyle(
+                                                            color:
+                                                                Colors.black),
                                                     alignText: false,
                                                     textOverflow: null),
-                                    CustomTextWidget(" per person",
-                                        style: CustomTextStyle.mediumTextStyle(
-                                            color: Colors.grey),
-                                        alignText: false,
-                                        textOverflow: null),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  children: [
-                                    CustomTextWidget("Seat Available",
-                                        style: CustomTextStyle.mediumTextStyle(
-                                            color: Colors.black),
-                                        alignText: false,
-                                        textOverflow: null),
-                                    Spacer(),
-                                    _select == "Small 4 Seats"
-                                        ? CustomTextWidget(
-                                            "Only Reserved Available",
-                                            style:
-                                                CustomTextStyle.boldMediumTextStyle(
-                                                    color: Colors.green),
-                                            alignText: false,
-                                            textOverflow: null)
-                                        : _select == "Large 10 Seats"
-                                            ? CustomTextWidget("4 Seats Available",
-                                                style: CustomTextStyle
-                                                    .boldMediumTextStyle(
-                                                        color: Colors.green),
-                                                alignText: false,
-                                                textOverflow: null)
-                                            : _select == "Luxury 7 Seats"
-                                                ? CustomTextWidget(
-                                                    "2 Seats Available",
-                                                    style: CustomTextStyle
-                                                        .boldMediumTextStyle(
-                                                            color: Colors.green),
-                                                    alignText: false,
-                                                    textOverflow: null)
-                                                : CustomTextWidget("Not Available",
+                                                Spacer(),
+                                                CustomTextWidget(
+                                                    "₹ ${_sharedBookingController.price.value}",
                                                     style: CustomTextStyle
                                                         .boldMediumTextStyle(
                                                             color:
-                                                                Colors.redAccent),
+                                                                Colors.green),
                                                     alignText: false,
                                                     textOverflow: null),
-                                  ],
+
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Row(
+                                              children: [
+                                                CustomTextWidget(
+                                                    "Seat Available",
+                                                    style: CustomTextStyle
+                                                        .mediumTextStyle(
+                                                            color:
+                                                                Colors.black),
+                                                    alignText: false,
+                                                    textOverflow: null),
+                                                Spacer(),
+                                                _sharedBookingController
+                                                            .seatAvail.value ==
+                                                        "0"
+                                                    ? CustomTextWidget(
+                                                        "Not Available",
+                                                        style: CustomTextStyle
+                                                            .boldMediumTextStyle(
+                                                                color: Colors
+                                                                    .redAccent),
+                                                        alignText: false,
+                                                        textOverflow: null)
+                                                    : CustomTextWidget(
+                                                        "${_sharedBookingController.seatAvail.value} Available",
+                                                        style: CustomTextStyle
+                                                            .boldMediumTextStyle(
+                                                                color: Colors
+                                                                    .green),
+                                                        alignText: false,
+                                                        textOverflow: null),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                 ),
                                 SizedBox(
                                   height: 20,
                                 ),
-
-
                                 MaterialButton(
                                   height: 40.0,
                                   minWidth: 300.0,
@@ -404,8 +455,8 @@ class _DayDetailPageState extends State<DayDetailPage> {
                                   textColor: Colors.white,
                                   child: new Text("Continue"),
                                   onPressed: () => {
-                                    Get.to(() => SharedBookingList(selectPerson: _selectPerson))
-
+                                    Get.to(() => SharedBookingList(
+                                        selectPerson: _selectPerson))
                                   },
                                   splashColor: Colors.redAccent,
                                 )
@@ -413,11 +464,10 @@ class _DayDetailPageState extends State<DayDetailPage> {
                             ),
                           ),
 
-
                           /////////////////////////// Full Booking /////////////////////////////////////
                           Container(
-                            margin:
-                                EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 0, vertical: 0),
                             padding: EdgeInsets.all(8),
                             decoration: BoxDecoration(
                               color: Colors.white,
@@ -438,28 +488,39 @@ class _DayDetailPageState extends State<DayDetailPage> {
                                         textOverflow: null),
                                   ],
                                 ),
-                                SizedBox(height: 8,),
+                                SizedBox(
+                                  height: 8,
+                                ),
                                 InkWell(
                                   onTap: () => _selectDate(context),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       CustomTextWidget("Travel Date",
-                                          style: CustomTextStyle.mediumTextStyle(
-                                              color: Colors.black),
+                                          style:
+                                              CustomTextStyle.mediumTextStyle(
+                                                  color: Colors.black),
                                           alignText: false,
                                           textOverflow: null),
                                       Spacer(),
-                                      Icon(Icons.calendar_today, size: 17,),
-                                      Text(
-                                        "${selectedDate.toLocal()}".split(' ')[0],
-                                        style: TextStyle(fontSize: 16,color: Color.fromRGBO(1, 1 , 1, 1),),
+                                      Icon(
+                                        Icons.calendar_today,
+                                        size: 17,
                                       ),
-
+                                      Text(
+                                        "${selectedDate.toLocal()}"
+                                            .split(' ')[0],
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: Color.fromRGBO(1, 1, 1, 1),
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
-                                SizedBox(height: 8,),
+                                SizedBox(
+                                  height: 8,
+                                ),
                                 Row(
                                   children: [
                                     CustomTextWidget("Select Vehicle",
@@ -470,7 +531,8 @@ class _DayDetailPageState extends State<DayDetailPage> {
                                     Spacer(),
                                     Container(
                                       height: 30,
-                                      padding: EdgeInsets.symmetric(horizontal: 4),
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 4),
                                       decoration: BoxDecoration(
                                           border: Border.all(
                                               color: Colors.grey.shade300)),
@@ -517,8 +579,8 @@ class _DayDetailPageState extends State<DayDetailPage> {
                                     Spacer(),
                                     _select == "Small 4 Seats"
                                         ? CustomTextWidget("1000 /-",
-                                            style:
-                                                CustomTextStyle.boldMediumTextStyle(
+                                            style: CustomTextStyle
+                                                .boldMediumTextStyle(
                                                     color: Colors.green),
                                             alignText: false,
                                             textOverflow: null)
@@ -533,13 +595,15 @@ class _DayDetailPageState extends State<DayDetailPage> {
                                                 ? CustomTextWidget("800 /-",
                                                     style: CustomTextStyle
                                                         .boldMediumTextStyle(
-                                                            color: Colors.green),
+                                                            color:
+                                                                Colors.green),
                                                     alignText: false,
                                                     textOverflow: null)
                                                 : CustomTextWidget("1200 /-",
                                                     style: CustomTextStyle
                                                         .boldMediumTextStyle(
-                                                            color: Colors.green),
+                                                            color:
+                                                                Colors.green),
                                                     alignText: false,
                                                     textOverflow: null),
                                     CustomTextWidget(" per person",
@@ -561,10 +625,9 @@ class _DayDetailPageState extends State<DayDetailPage> {
                                         textOverflow: null),
                                     Spacer(),
                                     _select == "Small 4 Seats"
-                                        ? CustomTextWidget(
-                                            "1 Available",
-                                            style:
-                                                CustomTextStyle.boldMediumTextStyle(
+                                        ? CustomTextWidget("1 Available",
+                                            style: CustomTextStyle
+                                                .boldMediumTextStyle(
                                                     color: Colors.green),
                                             alignText: false,
                                             textOverflow: null)
@@ -580,14 +643,16 @@ class _DayDetailPageState extends State<DayDetailPage> {
                                                     "2 Available",
                                                     style: CustomTextStyle
                                                         .boldMediumTextStyle(
-                                                            color: Colors.green),
+                                                            color:
+                                                                Colors.green),
                                                     alignText: false,
                                                     textOverflow: null)
-                                                : CustomTextWidget("Not Available",
+                                                : CustomTextWidget(
+                                                    "Not Available",
                                                     style: CustomTextStyle
                                                         .boldMediumTextStyle(
-                                                            color:
-                                                                Colors.redAccent),
+                                                            color: Colors
+                                                                .redAccent),
                                                     alignText: false,
                                                     textOverflow: null),
                                   ],
@@ -654,9 +719,7 @@ class _DayDetailPageState extends State<DayDetailPage> {
                                   color: Colors.deepOrangeAccent,
                                   textColor: Colors.white,
                                   child: new Text("Continue"),
-                                  onPressed: () => {
-                                  Get.to(FullBookingList())
-                                  },
+                                  onPressed: () => {Get.to(FullBookingList())},
                                   splashColor: Colors.redAccent,
                                 )
                               ],
