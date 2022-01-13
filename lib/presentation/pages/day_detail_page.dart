@@ -62,10 +62,10 @@ class _DayDetailPageState extends State<DayDetailPage> {
 
   _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
-        context: context,
-        builder: (context,child){
-          return Theme(
-              data: Theme.of(context).copyWith(
+      context: context,
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
             colorScheme: ColorScheme.light(
               primary: Colors.deepOrangeAccent, // header background color
               onPrimary: Colors.white, // header text color
@@ -76,12 +76,14 @@ class _DayDetailPageState extends State<DayDetailPage> {
                 primary: Colors.deepOrangeAccent, // button text color
               ),
             ),
-          ), child: child!,
-          );
-        },
-        initialDate: selectedDate,
-        firstDate: DateTime.now(),
-        lastDate: DateTime.now().add(Duration(days: 7)),);
+          ),
+          child: child!,
+        );
+      },
+      initialDate: selectedDate,
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(Duration(days: 7)),
+    );
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;
@@ -278,6 +280,8 @@ class _DayDetailPageState extends State<DayDetailPage> {
                                           );
                                         }).toList(),
                                         onChanged: (newValue) {
+                                          _sharedBookingController
+                                              .addDataAndFetch();
                                           setState(() {
                                             _selectPerson = newValue;
                                             _sharedBookingController
@@ -382,8 +386,10 @@ class _DayDetailPageState extends State<DayDetailPage> {
                                               .isLoading.value ==
                                           true
                                       ? Center(
-                                          child: Text("Please wait...",style: TextStyle(color: Colors.grey),)
-                                        )
+                                          child: Text(
+                                          "Please wait...",
+                                          style: TextStyle(color: Colors.grey),
+                                        ))
                                       : Column(
                                           children: [
                                             Row(
@@ -404,7 +410,6 @@ class _DayDetailPageState extends State<DayDetailPage> {
                                                                 Colors.green),
                                                     alignText: false,
                                                     textOverflow: null),
-
                                               ],
                                             ),
                                             SizedBox(
@@ -448,7 +453,7 @@ class _DayDetailPageState extends State<DayDetailPage> {
                                 SizedBox(
                                   height: 20,
                                 ),
-                                MaterialButton(
+                               Obx(() => _sharedBookingController.seatAvail.value == "" ? SizedBox(): MaterialButton(
                                   height: 40.0,
                                   minWidth: 300.0,
                                   color: Colors.deepOrangeAccent,
@@ -459,7 +464,7 @@ class _DayDetailPageState extends State<DayDetailPage> {
                                         selectPerson: _selectPerson))
                                   },
                                   splashColor: Colors.redAccent,
-                                )
+                                ))
                               ],
                             ),
                           ),
