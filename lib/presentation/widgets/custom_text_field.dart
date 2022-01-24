@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class CustomTextField extends StatefulWidget {
 
-  final Function validator;
+  final FormFieldValidator<String>? validator;
   final bool obSecureText;
   final BorderRadius borderRadius;
   final String? hintText;
@@ -11,7 +11,7 @@ class CustomTextField extends StatefulWidget {
   final bool numberButton;
   final TextEditingController? controller;
   final EdgeInsets contentPadding;
-  CustomTextField({required this.contentPadding,this.controller,required this.validator,required this.obSecureText,required this.borderRadius,this.hintText,required this.maxLines,required this.numberButton});
+  CustomTextField({required this.contentPadding,this.controller, this.validator,required this.obSecureText,required this.borderRadius,this.hintText,required this.maxLines,required this.numberButton});
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -24,7 +24,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       controller: widget.controller,
       maxLines: widget.maxLines,
       obscureText: widget.obSecureText,
-      validator: widget.validator(),
+      validator: widget.validator,
       keyboardType: widget.numberButton==true ? TextInputType.number : null,
       style: CustomTextStyle.smallTextStyle1(color: Colors.black),
       decoration: InputDecoration(

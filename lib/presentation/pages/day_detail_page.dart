@@ -428,7 +428,7 @@ class _DayDetailPageState extends State<DayDetailPage> {
                                                 Spacer(),
                                                 _sharedBookingController
                                                             .seatAvail.value ==
-                                                        "0"
+                                                        ""
                                                     ? CustomTextWidget(
                                                         "Not Available",
                                                         style: CustomTextStyle

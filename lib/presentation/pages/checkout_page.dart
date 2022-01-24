@@ -60,7 +60,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
       ),
       body: ListView(
         children: [
-          SharedBookingComponent(),
+          // SharedBookingComponent(),
           SizedBox(
             height: 10,
           ),

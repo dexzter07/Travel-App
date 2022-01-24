@@ -19,7 +19,7 @@ class PackageComponent extends StatelessWidget {
           scrollDirection: Axis.horizontal,
             physics: ClampingScrollPhysics(),
             shrinkWrap: true,
-            itemCount: _dayTourListController.packageTourList.length,
+            itemCount: 4,
             itemBuilder: (context,index){
               return PackageTourComponents(packageTourModel: _dayTourListController.packageTourList[index],);
             }

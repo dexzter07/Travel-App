@@ -1,11 +1,9 @@
-import 'dart:async';
-import 'dart:io';
 
-import 'package:cab_booking/presentation/styles/app_colors.dart';
+import 'dart:io';
 import 'package:cab_booking/presentation/styles/custom_text_style.dart';
-import 'package:cab_booking/presentation/widgets/full_width_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'custom_text_field.dart';
@@ -106,7 +104,9 @@ class _PermitFormWidgetState extends State<PermitFormWidget> {
             ),
             CustomTextField(
                 contentPadding: EdgeInsets.all(10),
-                validator: () {},
+                validator: RequiredValidator(
+                    errorText: "Full Name is required as per ID Proof"),
+                hintText: "Enter Full Name",
                 obSecureText: false,
                 borderRadius: BorderRadius.circular(10),
                 maxLines: 1,
@@ -124,16 +124,19 @@ class _PermitFormWidgetState extends State<PermitFormWidget> {
                         "Age",
                         style: CustomTextStyle.boldMediumTextStyle(
                             color: Colors.black),
+
                         alignText: false,
                         textOverflow: null,
                       ),
                       CustomTextField(
                           contentPadding: EdgeInsets.all(10),
-                          validator: () {},
+                          validator: RequiredValidator(
+                              errorText: "Age is required as per ID Proof"),
+                          hintText: "Enter Age",
                           obSecureText: false,
                           borderRadius: BorderRadius.circular(10),
                           maxLines: 1,
-                          numberButton: false),
+                          numberButton: true),
                     ],
                   ),
                 ),
@@ -153,7 +156,9 @@ class _PermitFormWidgetState extends State<PermitFormWidget> {
                       ),
                       CustomTextField(
                           contentPadding: EdgeInsets.all(10),
-                          validator: () {},
+                          validator: RequiredValidator(
+                              errorText: "Gender is required as per ID Proof"),
+                          hintText: "Enter Gender",
                           obSecureText: false,
                           borderRadius: BorderRadius.circular(10),
                           maxLines: 1,

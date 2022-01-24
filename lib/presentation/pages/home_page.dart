@@ -262,7 +262,7 @@ class _HomePageState extends State<HomePage> {
                     crossAxisCount: 2,
                     height: 233.0,
                   ),
-                  itemCount: _dayTourListController.dayTourList.length,
+                  itemCount: 4,
                   itemBuilder: (context,index){
                     return DayTourWidget(dayTourModel: _dayTourListController.dayTourList[index],);
                   }

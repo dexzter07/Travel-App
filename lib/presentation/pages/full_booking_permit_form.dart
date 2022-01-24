@@ -99,7 +99,6 @@ class _FullBookingPermitFormState extends State<FullBookingPermitForm> {
             ),
             CustomTextField(
                 contentPadding: EdgeInsets.all(10),
-                validator: () {},
                 obSecureText: false,
                 borderRadius: BorderRadius.circular(10),
                 maxLines: 2,
@@ -115,7 +114,6 @@ class _FullBookingPermitFormState extends State<FullBookingPermitForm> {
             ),
             CustomTextField(
                 contentPadding: EdgeInsets.all(10),
-                validator: () {},
                 obSecureText: false,
                 borderRadius: BorderRadius.circular(10),
                 maxLines: 2,

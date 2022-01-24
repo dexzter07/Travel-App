@@ -1,4 +1,6 @@
 
+
+
 final String SHAREMESSAGE = "Hey checkout this new cool App for Shopping, Great product you'll love it.";
 
 class AppConstants{
@@ -8,3 +10,8 @@ class AppConstants{
   static final borderRadius = 12.0;
 
 }
+
+
+
+
+
