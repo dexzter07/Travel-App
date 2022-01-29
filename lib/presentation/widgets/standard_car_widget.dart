@@ -1,8 +1,10 @@
 import 'package:cab_booking/logic/controllers/seat_avail_controller.dart';
+import 'package:cab_booking/presentation/pages/checkout_page.dart';
 import 'package:cab_booking/presentation/pages/permit_form.dart';
 import 'package:cab_booking/presentation/styles/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'full_width_button.dart';
 
 class StandardCarWidget extends StatefulWidget {
@@ -514,8 +516,17 @@ class _StandardCarWidgetState extends State<StandardCarWidget> {
                 FullWidthButton(
                   title: "Proceed",
                   color: AppColors.primaryButtonColor,
-                  onTap: () {
-                    Get.to(() => PermitForm(selectPerson: widget.selectPerson));
+                  onTap: () async {
+                    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                    var permit = sharedPreferences.getString("permit");
+                    print(list);
+                    if(permit == "0"){
+                      Get.to(() => CheckoutPage());
+                    }
+                    else {
+                      Get.to(() =>
+                          PermitForm(selectPerson: widget.selectPerson));
+                    }
                   },
                   margin: EdgeInsets.symmetric(horizontal: 45),
                   borderRadius: BorderRadius.circular(5),

@@ -58,6 +58,7 @@ class DayTourWidget extends StatelessWidget {
                 {
                   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
                   sharedPreferences.setString("id", dayTourModel!.id);
+                  sharedPreferences.setString("permit", dayTourModel!.permit);
                   if(FirebaseAuth.instance.currentUser == null){
                     Get.to(() => Login());
                   }

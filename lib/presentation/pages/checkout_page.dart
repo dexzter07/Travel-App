@@ -1,3 +1,4 @@
+import 'package:cab_booking/logic/controllers/shared_booking_controller.dart';
 import 'package:cab_booking/presentation/pages/success.dart';
 import 'package:cab_booking/presentation/styles/app_colors.dart';
 import 'package:cab_booking/presentation/styles/custom_text_style.dart';
@@ -18,6 +19,7 @@ class CheckoutPage extends StatefulWidget {
 }
 
 class _CheckoutPageState extends State<CheckoutPage> {
+  final SharedBookingController _sharedBookingController = Get.put(SharedBookingController());
   late Razorpay _razorpay;
 
   @override
@@ -201,8 +203,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     borderRadius: BorderRadius.circular(10),
                     title: "Proceed To Payment",
                     color: AppColors.primaryButtonColor,
-                    onTap: () {
-                      openCheckout();
+                    onTap: () async {
+                     await _sharedBookingController.confirmBooking();
+                     openCheckout();
                     }),
                 SizedBox(
                   height: 30,

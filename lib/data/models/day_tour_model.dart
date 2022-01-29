@@ -18,6 +18,8 @@ class DayTourListModel {
     required this.price,
     required this.discountPrice,
     required this.pointCovered,
+    required this.permit,
+
   });
 
   String id;
@@ -28,6 +30,7 @@ class DayTourListModel {
   String price;
   String discountPrice;
   String pointCovered;
+  String permit;
 
   factory DayTourListModel.fromJson(Map<String, dynamic> json) => DayTourListModel(
     id: json["id"] == null ? null : json["id"],
@@ -38,6 +41,7 @@ class DayTourListModel {
     price: json["price"] == null ? null : json["price"],
     discountPrice: json["discount_price"] == null ? null : json["discount_price"],
     pointCovered: json["point_covered"] == null ? null : json["point_covered"],
+    permit: json["permit"] == null ? null : json["permit"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -49,5 +53,6 @@ class DayTourListModel {
     "price": price == null ? null : price,
     "discount_price": discountPrice == null ? null : discountPrice,
     "point_covered": pointCovered == null ? null : pointCovered,
+    "permit": permit,
   };
 }
