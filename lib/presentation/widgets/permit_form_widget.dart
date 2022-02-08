@@ -34,14 +34,15 @@ class _PermitFormWidgetState extends State<PermitFormWidget> {
     XFile? image1 =
         (await _picker.pickImage(source: ImageSource.camera, imageQuality: 50));
     print(image);
-    print("image not ");
+
 
     setState(() {
       _image = File(image!.path);
       _image1 = File(image1!.path);
+      _permitFormController.passPhotoImage.value = _image.toString();
+      _permitFormController.idCardImage.value = _image1.toString();
 
-      print(_image);
-      print("image not Showing");
+
     });
   }
 
@@ -54,8 +55,8 @@ class _PermitFormWidgetState extends State<PermitFormWidget> {
     setState(() {
       _image = File(image!.path);
       _image1 = File(image1!.path);
-
-      print(_image);
+      _permitFormController.passPhotoImage.value = _image.toString();
+      _permitFormController.idCardImage.value = _image1.toString();
     });
   }
 
@@ -294,6 +295,8 @@ class _PermitFormWidgetState extends State<PermitFormWidget> {
               list.add(fullName.text);
               list.add(age.text);
               list.add(gender.text);
+              list.add(_permitFormController.passPhotoImage.value);
+              list.add(_permitFormController.idCardImage.value);
               _permitFormController.datas.add(list);
               print(list);
               print(_permitFormController.datas);
